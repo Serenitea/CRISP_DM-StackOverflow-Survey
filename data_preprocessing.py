@@ -290,16 +290,9 @@ dict_dict = {"Hobbyist": bool_dict, 'BetterLife': bool_dict,
 
 
 
-<<<<<<< HEAD
 dict_dict = {"Hobbyist": bool_dict, 'BetterLife': bool_dict,
              'ITperson': bool_dict, 'Trans': bool_dict, 'Dependents': bool_dict,
             'OrgSize': OrgSize_dict, 'YearsCode': YearsCode_dict,
-=======
-
-dict_dict = {"Hobbyist": bool_dict, 'BetterLife': bool_dict, 
-             'ITperson': bool_dict, 'Trans': bool_dict, 'Dependents': bool_dict, 
-            'OrgSize': OrgSize_dict, 'YearsCode': YearsCode_dict, 
->>>>>>> parent of 0a5b8e5... create proportion of language by dev types
              'YearsCodePro': YearsCode_dict,
              'OpenSourcer': OpenSourcer_dict, 'Age1stCode': Age1stCode_dict,
              'CareerSat': satis_dict, 'JobSat': satis_dict,
@@ -310,7 +303,6 @@ dict_dict = {"Hobbyist": bool_dict, 'BetterLife': bool_dict,
             'UnitTests': UnitTests_dict, 'PurchaseHow': PurchaseHow_dict,
              'PurchaseWhat': PurchaseWhat_dict, 'SOPartFreq': SOPartFreq_dict}
 
-<<<<<<< HEAD
 #Investigate missing data using different thresholds of %NaN missing.
 def investigate_nan_threshold(df, interval, start):
     '''
@@ -342,15 +334,6 @@ def investigate_nan_threshold(df, interval, start):
             return [col for col in df.columns if (df[col].isnull().sum()/df_rows)*100 > n-interval]
 
 def assess_missing_col(df):
-=======
-
-def get_vals(df, col, delimiter):
-    '''
-    for years 2017-2019.
-    processes a specified column from the raw imported dataframe
-    for 2017, delimiter = '; '
-    for 2018+19, delimiter = ';'
->>>>>>> parent of 0a5b8e5... create proportion of language by dev types
     '''
     This function analyzes how much data is missing from a dataframe and plots a histogram depicting the number of columns that have a certain percentage of missing data
     IN: df - dataframe to analyze NaN's for
@@ -398,12 +381,7 @@ def initial_preprocessing(df):
     df_filtered = df_lowmiss[df_lowmiss['WorkWeekHrs'] < 140]
     return df_filtered
 
-<<<<<<< HEAD
 def get_vals(df, col, delimiter=';'):
-=======
-
-def eval_complex_col(df, col):
->>>>>>> parent of 0a5b8e5... create proportion of language by dev types
     '''
     IN:
         df, col: dataframe, column name
@@ -595,7 +573,6 @@ def s_of_lists_to_df(s_of_lists):
     df_transposed = df.transpose()  #transpose the dataframe for ease of counting each list
     return df, df_transposed
 
-<<<<<<< HEAD
 def col_of_lists_to_df(df, col, delimiter=';'):
     '''
     Combines the functions split_col_of_lists and s_of_lists_to_df
@@ -603,9 +580,6 @@ def col_of_lists_to_df(df, col, delimiter=';'):
     s,s_len, s_split, col_vals = split_col_of_lists(df, col, delimiter)
     df_new, df_tp = s_of_lists_to_df(s_split)
     return df_new, df_tp, col_vals, s_len
-=======
-
->>>>>>> parent of 0a5b8e5... create proportion of language by dev types
 
 def make_df_bool(df, df_transposed, vals_list):
     '''
@@ -621,50 +595,6 @@ def make_df_bool(df, df_transposed, vals_list):
     return df_bool
 
 
-#def process_data(df, col):
-#    '''
-#    Condensed function processing from initial imported df to boolean df
-#    Used for 2017-2019
-#    '''
-#    df_droppedna, df_droppedna_len, df_droppedna_split, df_count, df_vals = process_col(df, col)
-#    df2, df2_transposed = s_of_lists_to_df(df_droppedna_split)
-#    df_bool = make_df_bool(df2, df2_transposed, df_vals)
-    
-#    return df_bool, df_vals, df_droppedna_len
-
-
-def process_data_extended(df, col, delimiter):
-    '''
-    for years 2017-2019.
-    processes a specified column from the raw imported dataframe
-
-    IN: 
-        df: SO Developer survey as dataframe
-        col: column to be evaluated
-        delimiter: 
-            for 2017, delimiter = '; '
-        for 2018+19, delimiter = ';'
-    OUT:
-        df_bool: boolean dataframe of each extracted feature
-        df_vals: list of all features extracted
-        df_len: number of rows
-    '''
-    s = df[col]
-    s = s.dropna()
-    df_len = s.shape[0]
-    df_count, df_vals = eval_complex_col(df, col)
-    s_split = s.str.split(pat = delimiter)
-
-    df_new = pd.DataFrame(item for item in s_split)
-    df_new_transposed = df_new.transpose()
-
-    for item in df_vals:
-        df_new[item] = df_new_transposed.iloc[:,:].isin([item]).sum()
-    df_bool = df_new.loc[:,df_vals]
-
-    return df_bool, df_vals, df_len
-
-
 def find_other_lang(df):
     '''
     for all years (2015-2019)
@@ -676,7 +606,6 @@ def find_other_lang(df):
     other_lang_list = list(other_lang)
     return other_lang_list
 
-<<<<<<< HEAD
 def make_counts_and_prop(bool_df, df_len, series_name, index_name, order = True):
     '''
     2016-2019
@@ -684,28 +613,6 @@ def make_counts_and_prop(bool_df, df_len, series_name, index_name, order = True)
     also creates a series of the proportions of counts
     Series name: 'Counts'
     Index name: 'Language'
-=======
-def make_counts2015(ini_df, series_name, index_name):
-    '''
-    for 2015 data - multiple columns for one data category
-    converts a dataframe into a 1-d series to a 2 column df,
-    returned df has Columns and column counts
-    series sorted alphabetically
-    '''
-    series = ini_df.count()
-    series = series.rename_axis(index_name)
-    series = series.rename(series_name).sort_index()
-    df = series.reset_index()
-#    df.sort_values(by=[sort_by], inplace = True)
-    return series, df
-
-
-
-def make_counts(ini_df, series_name, index_name):
-    '''
-    2016-2019
-    creates a df of counts for each column of the boolean df
->>>>>>> parent of 0a5b8e5... create proportion of language by dev types
     '''
     series = bool_df.sum()
     series = series.rename_axis(index_name)
@@ -720,7 +627,6 @@ def make_counts(ini_df, series_name, index_name):
 
 
 
-<<<<<<< HEAD
 def col_of_lists_to_bool(df, col, delimiter = ';'):
     '''
     (previously named process_col_extended)
@@ -800,79 +706,3 @@ def sep_by_col(df, col, delimiter, vals_list):
         val_df = df[df[col].isin([val])]
         dict_of_df[key_name] = val_df
     return dict_of_df
-=======
-def process_data_extended(df, col, delimiter):
-    '''
-    for years 2017-2019.
-    processes a specified column from the raw imported dataframe
-    for 2017, delimiter = '; '
-    for 2018+19, delimiter = ';'
-    IN: df, col, delimiter
-    OUT:
-    df_bool
-    df_vals
-    df_len
-    '''
-    s = df[col]
-    s = s.dropna()
-    df_len = s.shape[0]
-    df_count, df_vals = eval_complex_col(df, col)
-    s_split = s.str.split(pat = delimiter)
-
-    df_new = pd.DataFrame(item for item in s_split)
-    df_new_transposed = df_new.transpose()
-
-    #
-    for item in df_vals:
-        df_new[item] = df_new_transposed.iloc[:,:].isin([item]).sum()
-    df_bool = df_new.loc[:,df_vals]
-
-    return df_bool, df_vals, df_len
-
-
-def process_data(df):
-    '''
-    Input: original 2019 dataframe
-    
-    Steps:
-    1. drop unwanted features
-    2. drop rows that don't contain income
-    3. drop rows that have more than 45% missing data
-    4. convert the mixed variables to bool tables and merge them with the main table
-    '''
-    row_threshold = 45 #change row threshold here
-    
-    df = df.drop(feat_drop, axis = 1) #drop unwanted features columns
-    #df = df[df['ConvertedComp'].isnull() == 0] #decided to not filter this early
-    df_lowmiss = df[df.isnull().sum(axis=1) < row_threshold].reset_index(drop=True) #drop rows with over 45% missing data
-
-    #remove rows that have more than 140hr worked per week
-    df_filtered = df_lowmiss[df_lowmiss['WorkWeekHrs'] < 140]
-    #return df_filtered
-
-
-    for var in dict_dict:
-        df_filtered[var].replace(dict_dict[var], inplace = True)
-
-    #convert numerical features to floats
-    #df_filtered[num_feat].astype(float)
-    for var in num_feat:
-        df_filtered[var] = pd.to_numeric(df_filtered[var])
-
-    #make boolean dummies dfs out of mixed categorical features and merge table
-    
-    merged_df = df_filtered.copy()
-    for var in mixed_cat_feat:
-        var_bool, var_vals, var_len = process_data_extended(df_filtered, var, ';') #make new bool df with each value having its own column
-        #print(var_vals)
-        merged_df = pd.DataFrame.merge(merged_df, var_bool, how = 'outer',  left_index = True, right_index = True) #merge new bool df with main df
-        merged_df = merged_df.drop(var, axis = 1) #drop the column that was just dummied
-
-    #make dummies out of simple categorical features
-    df_dummy = pd.get_dummies(merged_df[cat_feat].dropna().astype(str))
-    df_wdummies = merged_df.join(df_dummy, )
-    df_wdummies_dropped = df_wdummies.drop(cat_feat, axis = 1)
-    
-    return df_wdummies_dropped
-
->>>>>>> parent of 0a5b8e5... create proportion of language by dev types
